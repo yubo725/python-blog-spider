@@ -16,8 +16,8 @@ class Article:
 		self.readcount = readcount
 		self.commentcount = commentcount
 
+# 连接数据库
 def getConnection():
-	# 连接数据库
 	conn = MySQLdb.connect('localhost', 'root', 'root', 'blog', charset='utf8')
 	conn.set_character_set('utf8')
 	return conn;
