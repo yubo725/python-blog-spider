@@ -8,13 +8,14 @@ import re
 
 # 文章类
 class Article:
-	def __init__(self, id, title, brief, time, readcount, commentcount):
+	def __init__(self, id, title, brief, time, readcount, commentcount, detailurl):
 		self.id = id
 		self.title = title
 		self.brief = brief
 		self.time = time
 		self.readcount = readcount
 		self.commentcount = commentcount
+		self.detailurl = detailurl
 
 # 连接数据库
 def getConnection():
@@ -29,11 +30,20 @@ def getMD5(str):
 	return md5.hexdigest()
 
 # 获取某个文章的标题
+def getTitleAndDetail(item):
+	e = item.find('a')
+	if e != None:
+		title = e.string
+		detailurl = 'http://blog.csdn.net%s' % e['href']
+		return {"title": title, "detailurl": detailurl}
+	return None
+
 def getTitle(item):
 	e = item.find('a')
 	if e != None:
+		print e['href']
 		return e.string
-	return ""
+	return None
 
 # 获取某个文章的摘要
 def getBrief(item):
@@ -94,8 +104,8 @@ def saveRecord(article):
 		if not isRecordExist(article.id):
 			title = base64.b64encode(article.title)
 			brief = base64.b64encode(article.brief)
-			sql = "insert into article values('%s', '%s', '%s', '%s', %d, %d)" % (article.id, title, 
-				brief, article.time, article.readcount, article.commentcount)
+			sql = "insert into article(id, title, brief, time, readcount, commentcount, detailurl) values('%s', '%s', '%s', '%s', %d, %d, '%s')" % (article.id, title, 
+				brief, article.time, article.readcount, article.commentcount, article.detailurl)
 			print 'sql =', sql
 			conn = None
 			cursor = None
@@ -118,20 +128,22 @@ def getPageData(soup):
 	listElement = soup.find(id='article_list')
 	articalList = listElement.find_all(class_="list_item article_item")
 	for item in articalList:
-		title = getTitle(item)
+		dic = getTitleAndDetail(item)
+		title = dic['title']
+		detailurl = dic['detailurl']
 		brief = getBrief(item)
 		time = getTime(item)
 		readcount = getReadCount(item)
 		commentcount = getCommentCount(item)
 		id = getMD5('%s%s' % (title, time))
-		article = Article(id, title, brief, time, readcount, commentcount)
+		article = Article(id, title, brief, time, readcount, commentcount, detailurl)
 		saveRecord(article)
 
 def start(url):
 	response = urllib2.urlopen(url)
 	content = response.read()
 	soup = BeautifulSoup(content, 'html.parser')
-	papeList = soup.find(id="papelist")
+	getPageData(soup)
 	pageSize = getPageSize(soup)
 	if pageSize > 1:
 		for index in range(2, pageSize + 1):
@@ -139,5 +151,16 @@ def start(url):
 			print 'url =', urlStr
 			getPageData(BeautifulSoup(urllib2.urlopen(urlStr).read(), 'html.parser'))
 
+# 删除数据库所有数据
+def deleteAll():
+	sql = 'delete from article where 1 = 1'
+	conn = getConnection()
+	cursor = conn.cursor()
+	cursor.execute(sql)
+	conn.commit()
+	cursor.close()
+	conn.close()
+
 if __name__ == '__main__':
+	# deleteAll()
 	start('http://blog.csdn.net/yubo_725')
