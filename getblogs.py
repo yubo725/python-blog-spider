@@ -29,20 +29,13 @@ def getMD5(str):
 	md5.update(str)
 	return md5.hexdigest()
 
-# 获取某个文章的标题
+# 获取某个文章的标题和详情链接
 def getTitleAndDetail(item):
 	e = item.find('a')
 	if e != None:
 		title = e.string
 		detailurl = 'http://blog.csdn.net%s' % e['href']
 		return {"title": title, "detailurl": detailurl}
-	return None
-
-def getTitle(item):
-	e = item.find('a')
-	if e != None:
-		print e['href']
-		return e.string
 	return None
 
 # 获取某个文章的摘要
@@ -122,6 +115,8 @@ def saveRecord(article):
 					conn.close()
 				if cursor != None:
 					cursor.close()
+		else:
+			print 'record exist!'
 
 # 获取某一页的数据
 def getPageData(soup):
