@@ -23,7 +23,7 @@ def getConnection():
 	# conn = MySQLdb.connect('localhost', 'root', 'root', 'blog', charset='utf8')
 	conn = sqlite3.connect('blog.db3')
 	# conn.set_character_set('utf8')
-	return conn;
+	return conn
 
 # sqlite3创建表
 def createTable():
