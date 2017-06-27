@@ -146,6 +146,39 @@ def start(url):
 			print 'url =', urlStr
 			getPageData(BeautifulSoup(urllib2.urlopen(urlStr).read(), 'html.parser'))
 
+# 获取博客详情内容
+def getDetailContent(url):
+	response = urllib2.urlopen(url)
+	content = response.read()
+	soup = BeautifulSoup(content, 'html.parser')
+	element = soup.find(id="article_content")
+	if element != None:
+		return str(element)
+	return ""
+
+# 更新数据库中的博客详情
+def updateDetailContent():
+	conn = getConnection()
+	cursor = conn.cursor()
+	try:
+		sql = "select id, detailurl, content from article where content is null"
+		cursor.execute(sql)
+		data = cursor.fetchall()
+		if len(data) > 0:
+			for item in data:
+				id = item[0]
+				detailurl = item[1]
+				content = getDetailContent(detailurl)
+				if content != None:
+					sql = "update article set content = '%s' where id = '%s'" % (base64.b64encode(content), id)
+					cursor.execute(sql) 
+					conn.commit()
+	except Exception as e:
+		print e
+	finally:
+		cursor.close()
+		conn.close()
+
 # 删除数据库所有数据
 def deleteAll():
 	sql = 'delete from article where 1 = 1'
@@ -157,5 +190,6 @@ def deleteAll():
 	conn.close()
 
 if __name__ == '__main__':
-	# deleteAll()
+	# 先执行start获取所有文章，再获取每一篇文章的详情
 	start('http://blog.csdn.net/yubo_725')
+	updateDetailContent()

@@ -1,0 +1,49 @@
+<div class="article_content tracking-ad" data-dsm="post" data-mod="popu_307" id="article_content">
+<p>本文记录的是Extjs入门的第一个程序：Hello World，在浏览器中访问我们的程序，会出现一个提示框，如下图所示：</p>
+<p><img alt="" src="http://img.blog.csdn.net/20150423135607889?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveXVib183MjU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center"/><br/>
+</p>
+<p>该提示框可以在浏览器内移动，点击OK按钮或右上角的按钮，提示框关闭，下面我们就来实现这个效果。</p>
+<p>1、要使用Extjs，必须先下载对应的sdk，可以在官方网站上下载，地址为：<a href="http://extjs.org.cn/" target="_blank">http://extjs.org.cn/</a></p>
+<p>2、下载好了对应的sdk后，可以看到，里面有很多文件，目录结构如下图：</p>
+<p><img alt="" src="http://img.blog.csdn.net/20150423140027963?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveXVib183MjU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center"/><br/>
+</p>
+<p>面对这么多的文件，这里我们该怎么使用Extjs呢？从Extjs的官方文档上，我们可以找到答案，链接地址为：<a href="http://docs.sencha.com/extjs/5.0/" target="_blank">http://docs.sencha.com/extjs/5.0/</a></p>
+<p>打开官方文档后，可以看到如下图的内容：</p>
+<p><img alt="" src="http://img.blog.csdn.net/20150423140203179?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveXVib183MjU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center"/><br/>
+</p>
+<p>我们点开上图中的Welcome to Ext JS: Hello World，里面有对Extjs的Hello World程序的详细解释，如下图：</p>
+<p><img alt="" src="http://img.blog.csdn.net/20150423140319495?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveXVib183MjU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center"/><br/>
+</p>
+<p>我们要开始使用Extjs，第一步应该是知道如何引入Extjs的代码，上图中给我们说明了需要引入的三个文件，这三个文件分别是：</p>
+<p>/build/packages/ext-theme-neptune/build/resources/ext-theme-neptune-all.css<br/>
+</p>
+<p>/build/ext-all.js<br/>
+</p>
+<p>/build/packages/ext-theme-neptune/build/ext-theme-neptune.js<br/>
+</p>
+<p>引入了这三个文件后，我们就可以使用Extjs的API了，我们在sdk的目录下新建一个文件夹test，然后在test文件夹下新建一个HTML文件，名为index.html，在其中编辑如下内容：</p>
+<p></p>
+<pre class="html" name="code">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;!-- 下面是三个必须引入的文件 --&gt;
+		&lt;link rel="stylesheet" type="text/css" href="../build/packages/ext-theme-neptune/build/resources/ext-theme-neptune-all.css"&gt;
+		&lt;script src="../build/ext-all.js"&gt;&lt;/script&gt;
+		&lt;script src="../build/packages/ext-theme-neptune/build/ext-theme-neptune.js"&gt;&lt;/script&gt;
+
+		&lt;script type="text/javascript"&gt;
+			//当文档加载完成后，会执行下面的函数
+			Ext.onReady(function () {
+        		Ext.MessageBox.alert("提示", "Hello World");
+    		});
+		&lt;/script&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+
+	&lt;/body&gt;
+&lt;/html&gt;</pre>保存文件后，我们用浏览器打开test.html，不出问题的话，提示框应该就会出来了。
+<p></p>
+<p>以上就是Extjs入门的第一个程序Hello World。</p>
+<p><br/>
+</p>
+</div>
