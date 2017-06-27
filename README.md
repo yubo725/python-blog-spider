@@ -7,6 +7,7 @@
 id, title, brief, time, readcount, commentcount, detailurl, content
 id, 标题, 摘要, 发布时间, 阅读数, 评论数, 详情页URL, 文章内容
 ```
+数据库加入了sqlite3
 
 # 截图
 ![image](https://github.com/yubo725/BlogSpider/blob/master/screenshot.png)
