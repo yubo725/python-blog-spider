@@ -25,6 +25,7 @@ def getConnection():
 	# conn.set_character_set('utf8')
 	return conn;
 
+# sqlite3创建表
 def createTable():
 	sql = 'create table article(id text primary key, title text, brief text, time text, readcount integer, commentcount integer, detailurl text, content text)'
 	conn = getConnection()
