@@ -4,6 +4,7 @@ import MySQLdb
 import urllib2
 import hashlib
 import base64
+import sqlite3
 import re
 
 # 文章类
@@ -19,9 +20,24 @@ class Article:
 
 # 连接数据库
 def getConnection():
-	conn = MySQLdb.connect('localhost', 'root', 'root', 'blog', charset='utf8')
-	conn.set_character_set('utf8')
+	# conn = MySQLdb.connect('localhost', 'root', 'root', 'blog', charset='utf8')
+	conn = sqlite3.connect('blog.db3')
+	# conn.set_character_set('utf8')
 	return conn;
+
+def createTable():
+	sql = 'create table article(id text primary key, title text, brief text, time text, readcount integer, commentcount integer, detailurl text, content text)'
+	conn = getConnection()
+	cursor = conn.cursor()
+	try:
+		cursor.execute(sql)
+		print 'create table success'
+	except Exception as e:
+		print e
+	finally:
+		conn.commit()
+		# cursor.close()
+		# conn.close()
 
 # 获取字符串的MD5
 def getMD5(str):
@@ -88,7 +104,7 @@ def isRecordExist(id):
 	cursor = conn.cursor()
 	cursor.execute(sql)
 	data = cursor.fetchall()
-	cursor.close();
+	# cursor.close();
 	return len(data) > 0
 
 # 数据库插入一条记录
@@ -111,10 +127,11 @@ def saveRecord(article):
 			except Exception as e:
 				print 'insert into db error: ', e
 			finally:
-				if conn != None:
-					conn.close()
-				if cursor != None:
-					cursor.close()
+				pass
+				# if conn != None:
+				# 	conn.close()
+				# if cursor != None:
+				# 	cursor.close()
 		else:
 			print 'record exist!'
 
@@ -176,8 +193,9 @@ def updateDetailContent():
 	except Exception as e:
 		print e
 	finally:
-		cursor.close()
-		conn.close()
+		pass
+		# cursor.close()
+		# conn.close()
 
 # 删除数据库所有数据
 def deleteAll():
@@ -191,5 +209,6 @@ def deleteAll():
 
 if __name__ == '__main__':
 	# 先执行start获取所有文章，再获取每一篇文章的详情
-	start('http://blog.csdn.net/yubo_725')
+	createTable()
+	# start('http://blog.csdn.net/yubo_725')
 	updateDetailContent()
